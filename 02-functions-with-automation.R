@@ -19,13 +19,14 @@ ds_wider %>% group_by(age_group) %>%
   summarize(across(starts_with("AUC"), na_mean))
 
 #Why stop there?
-na_mean <- function(x) mean(x, na.rm = T)
+na_mean <- function(x) mean(x, na.rm = T) #If your function fits on one line, you can drop the {}
 na_sd <- function(x) sd(x, na.rm = T)
 na_se <- function(x) {
-  x <- discard(x, is.na)
+  x <- discard(x, is.na) #discard is like "filter if not" for vectors
   sd(x)/sqrt(length(x))
 }
 fx_list <- list(M = na_mean, SD = na_sd, SE = na_se)
 
 ds_wider %>% group_by(age_group) %>% 
   summarize(across(starts_with("AUC"), fx_list))
+

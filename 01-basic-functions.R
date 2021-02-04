@@ -43,21 +43,3 @@ hyp(3,4)
 
 #How could we return multiple values?
 
-
-library(tidyverse)
-
-paths <- c("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Fellowship_Of_The_Ring.csv",
-           "https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Two_Towers.csv",
-           "https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Return_Of_The_King.csv")
-ds_map <- map_dfr(paths, read_csv)
-
-ds_longer <- pivot_longer(ds_map, Male:Female, names_to = "Sex", values_to = "Words")
-
-words_graph <- function(df) {
-  p <- ggplot(df, aes(x = Race, y = Words, fill = Sex)) + 
-    geom_bar(stat = "identity", position = "dodge") + 
-    ggtitle(df$Film) + theme_minimal()
-  print(p)
-}
-
-split(ds_longer.$Film) %>% map(words_graph)
