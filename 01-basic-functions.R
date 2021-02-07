@@ -1,5 +1,9 @@
-#Functions have 4 parts: a function name (what you call to use the function), an argument list (inputs)
-# a body (where calculations are made), and an output. Typically, the output is the last line of the body
+#Functions have 4 parts: 
+  #a function name (what you call to use the function)
+  #an argument list (inputs)
+  # a body (where calculations are made)
+  #and an return value (output). 
+  #The last line is the return unless overriden with the return command
 
 function_name <- function(input1, input2) {
   #THIS IS THE BODY
@@ -8,14 +12,17 @@ function_name <- function(input1, input2) {
   sqrt(a + b) #THIS IS THE OUTPUT
 }
 
-function_name(3,4)
-function_name(3)
+function_name(3,4) #Yep
+function_name(3) #Nope
+function_name(3, "4") #Nope
+function_name(3:10, 3:10)
 
 #Some things to notice:
   #Running the function lines creates the function in the environment
   #Calling the function returns only the last value
   #Calling the function without all of the input arguments returns an error
   #a and b are created within the function, and don't exist in our environment
+  #Entering vector inputs gives us vector outputs, no addtl coding needed
 
 #None of the names we used were helpful! This would be better
 hyp <- function(side_a, side_b) {

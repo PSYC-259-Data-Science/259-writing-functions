@@ -1,4 +1,11 @@
-# USEFUL HEADER INFORMATION NEEDS TO GO HERE
+# auc_boxplot function, John Franchak, 2/7/2021
+# Creates boxplots of AUC values by age group
+# Input arguments:
+  # df = a study data frame containing age_group, AUC_sal, and stim
+  # stim_name (optional) = a string containing the name of a stimulus to plot; will plot overall if not included
+  # save_file = a boolean indicating whether to save the resulting plot
+# Return values: 
+  # p = the resulting ggplot object
 
 auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
   stopifnot(is.logical(save_file))
@@ -21,7 +28,9 @@ auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
     theme_minimal()
   
   if (save_file == T) {
-    ggsave(paste0("eda/",stim_name,".png"), plot = p)
+    file_name <- paste0("eda/",stim_name,".png")
+    ggsave(file_name, plot = p)
+    print(paste("Wrote file", file_name))
   }
   return(p)
 }

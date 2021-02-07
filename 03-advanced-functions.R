@@ -43,7 +43,7 @@ by_stim_graph(ds, "Dogs")
 map(c("Feist","Dogs","Plane","Science"), ~ by_stim_graph(ds, .x))
 
 #Can we make the function more flexible?
-#Make save_file a argument with a default of "FALSE"
+#Make save_file an argument with a default of "FALSE"
 by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
   ds %>% filter(stim == stim_name) %>% 
     ggplot(aes(x = age_group, y = AUC_sal)) + 
@@ -57,11 +57,21 @@ by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
   #USE AN IF STATEMENT TO HANDLE THE SAVE ARGUMENT
   #If save file is T, run the code, otherwise don't
   if (save_file == T) {
-    ggsave(paste0("eda/",stim_name,".png"))
+    file_name <- paste0("eda/",stim_name,".png")
+    ggsave(file_name)
+    print(paste("Wrote file", file_name))
   }
 }
 by_stim_graph(ds, "Feist")
 by_stim_graph(ds, "Feist", save_file = T)
+
+#if statements help control the flow of your function
+if (condition == T) {
+  #Do the stuff here
+} else {
+  #Do the stuff here
+}
+
 
 #Can we make the function EVEN more flexible?
 #Make stim_name an optional argument. If it's supplied, filter by stim. If not, graph all data
@@ -83,7 +93,9 @@ auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
     theme_minimal()
   
   if (save_file == T) {
-    ggsave(paste0("eda/",stim_name,".png"), plot = p)
+    file_name <- paste0("eda/",stim_name,".png")
+    ggsave(file_name, plot = p)
+    print(paste("Wrote file", file_name))
   }
   return(p)
 }
