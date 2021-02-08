@@ -3,6 +3,7 @@ source("functions/auc_boxplot.R")
 
 ds <- read_csv("data_cleaned/cleaned.csv")
 
+#These won't run because we set "stopifnot"...
 auc_boxplot(ds, stim_name = Feist)
 auc_boxplot(ds, save_file = "TRUE")
 

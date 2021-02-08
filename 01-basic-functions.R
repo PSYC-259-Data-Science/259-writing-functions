@@ -13,8 +13,8 @@ function_name <- function(input1, input2) {
 }
 
 function_name(3,4) #Yep
-function_name(3) #Nope
-function_name(3, "4") #Nope
+function_name(3) #Nope (why not?)
+function_name(3, "4") #Nope (why not?)
 function_name(3:10, 3:10)
 
 #Some things to notice:
@@ -49,4 +49,4 @@ hyp <- function(side_a, side_b) {
 hyp(3,4)
 
 #How could we return multiple values?
-
+#Let's write it together

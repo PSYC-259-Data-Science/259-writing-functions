@@ -5,7 +5,7 @@ ds_wider <- pivot_wider(ds, id_cols = c("id","age","age_group"), names_from = "s
 
 #No built in summary fx for standard error
 ds_wider %>% group_by(age_group) %>% 
-  summarize(se = sd(AUC_sal_Feist)/sqrt(length()))
+  summarize(AUC_Feist_SE = sd(AUC_sal_Feist)/sqrt(length(AUC_sal_Feist)))
 
 #this gets really clunky, especially if we want to include a list of functions
 ds_wider %>% group_by(age_group) %>% 
@@ -30,3 +30,20 @@ fx_list <- list(M = na_mean, SD = na_sd, SE = na_se)
 ds_wider %>% group_by(age_group) %>% 
   summarize(across(starts_with("AUC"), fx_list))
 
+#Can embed your own fxs within fxs
+summary_stats <- function(df, var_select_string) {
+  na_mean <- function(x) mean(x, na.rm = T)
+  na_sd <- function(x) sd(x, na.rm = T)
+  na_se <- function(x) {
+    x <- discard(x, is.na)
+    sd(x)/sqrt(length(x))
+  }
+  fx_list <- list(M = na_mean, SD = na_sd, SE = na_se)
+  
+  df  %>% 
+    summarize(across(contains(var_select_string), fx_list))
+}
+
+ds_wider %>% summary_stats("AUC")
+ds_wider %>% summary_stats("Feist")
+ds_wider %>% group_by(age_group) %>% summary_stats("Feist")
