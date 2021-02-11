@@ -41,10 +41,10 @@ summary_stats <- function(df, var_select_string) {
   fx_list <- list(M = na_mean, SD = na_sd, SE = na_se)
 
   df  %>%
-    summarize(across(contains(var_select_string), fx_list))
+    summarize(across(contains(var_select_string) & where(is.numeric), fx_list))
 }
 
 ds_wider %>% summary_stats("AUC")
 ds_wider %>% summary_stats("Feist")
-ds_wider %>% summary_stats("age") #Why doesn't this run? Grabs age_group factor too
+ds_wider %>% summary_stats("age") #Grabs "age" and "age_group" (factor)
 ds_wider %>% group_by(age_group) %>% summary_stats("Feist")
