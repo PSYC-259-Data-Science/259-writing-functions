@@ -12,9 +12,10 @@ function_name <- function(input1, input2) {
   sqrt(a + b) #THIS IS THE OUTPUT
 }
 
-function_name(3,4) #Yep
+h <- function_name(3,4) #Yep
 function_name(3) #Nope (why not?)
 function_name(3, "4") #Nope (why not?)
+
 function_name(3:10, 3:10)
 
 #Some things to notice:
@@ -25,7 +26,7 @@ function_name(3:10, 3:10)
   #Entering vector inputs gives us vector outputs, no addtl coding needed
 
 #None of the names we used were helpful! This would be better
-hyp <- function(side_a, side_b) {
+hyp_of_a_triangle <- function(side_a, side_b) {
   sqrt(side_a^2 + side_b^2) 
 }
 hyp(3,4)
@@ -36,17 +37,26 @@ mean <- function(side_a, side_b) {
   sqrt(side_a^2 + side_b^2) 
 }
 mean(1,2)
-mean <- NULL  
-mean(1,2) #Phew
+rm(mean)  
+mean(c(1,2)) #Phew
 
 #What if we wanted to return an earlier value rather than the last line?
 hyp <- function(side_a, side_b) {
   a <- side_a^2
   b <- side_b^2
-  sqrt(a + b) 
-  return(a)
+  h <- sqrt(a + b) 
+  return(h)
 }
 hyp(3,4)
 
 #How could we return multiple values?
 #Let's write it together
+hyp <- function(side_a, side_b) {
+  a <- side_a^2
+  b <- side_b^2
+  h <- sqrt(a + b)
+  output <- list(a = side_a, b = side_b, h = h)
+  return(output)
+}
+res <- hyp(3,4)
+res$h
