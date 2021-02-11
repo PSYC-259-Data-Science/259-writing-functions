@@ -8,8 +8,10 @@
   # p = the resulting ggplot object
 
 auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
-  stopifnot(is.logical(save_file))
-  stopifnot(is.null(save_file) | is.character(save_file))
+  require(tidyverse)
+  stopifnot("ERROR: save_file must be TRUE/FALSE" = is.logical(save_file))
+  
+  stopifnot("ERROR: stim_name must be a character" = is.null(stim_name) | is.character(stim_name))
   
   if (!is.null(stim_name)) {
     ds <- ds %>% filter(stim == stim_name)
