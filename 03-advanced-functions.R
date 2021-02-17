@@ -44,6 +44,7 @@ map(c("Feist","Dogs","Plane","Science"), ~ by_stim_graph(ds, .x))
 
 #Can we make the function more flexible?
 #Make save_file an argument with a default of "FALSE"
+#Assigning a value to an argument with "=" sets the defaul
 by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
   #Part1: Make the graph
   ds %>% filter(stim == stim_name) %>% 
@@ -68,26 +69,20 @@ by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
 by_stim_graph(ds, "Feist")
 by_stim_graph(ds, "Feist", save_file = T)
 
-#if statements help control the flow of your function
-if (condition == T) {
-  #Do the stuff here
-} else {
-  #Do the stuff here
-}
-
-
 #Can we make the function even more flexible?
 #Make stim_name an optional argument. If it's supplied, filter by stim. If not, graph all data
 auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
+  #Part1: Check the input
+  stopifnot("ERROR: save_file must be logical" = is.logical(save_file))
   
-  #Part1: Filter dataset if a stim is included, otherwise "overall"
+  #Part2: Filter dataset if a stim is included, otherwise "overall"
   if (!is.null(stim_name)) {
     ds <- ds %>% filter(stim == stim_name)
   } else {
     stim_name <- "Overall"
   }
   
-  #Part2: Make the graph and save it to p
+  #Part3: Make the graph and save it to p
   p <- ds %>% 
     ggplot(aes(x = age_group, y = AUC_sal)) + 
     geom_hline(yintercept = 0.5) +
@@ -98,16 +93,17 @@ auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
     ylab("Saliency AUC") +
     theme_minimal()
   
-  #Part3: Save the graph if save_file is TRUE
+  #Part4: Save the graph if save_file is TRUE
   if (save_file == T) {
     file_name <- paste0("eda/",stim_name,".png")
     ggsave(file_name, plot = p)
     print(paste("Wrote file", file_name))
   }
   
-  #Part4: Return the graph
+  #Part5: Return the graph
   return(p)
 }
 auc_boxplot(ds)
 auc_boxplot(ds, stim = "Plane")
 auc_boxplot(ds, save_file = T)
+auc_boxplot(ds, save_file = "yes") 
