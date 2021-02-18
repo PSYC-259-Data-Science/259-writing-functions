@@ -47,7 +47,7 @@ map(c("Feist","Dogs","Plane","Science"), ~ by_stim_graph(ds, .x))
 #Assigning a value to an argument with "=" sets the defaul
 by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
   #Part1: Make the graph
-  ds %>% filter(stim == stim_name) %>% 
+  p <- ds %>% filter(stim == stim_name) %>% 
     ggplot(aes(x = age_group, y = AUC_sal)) + 
     geom_hline(yintercept = 0.5) +
     geom_boxplot() + 
@@ -62,16 +62,17 @@ by_stim_graph <- function(ds, stim_name, save_file = FALSE) {
   #If save file is T, run the code, otherwise don't
   if (save_file == T) {
     file_name <- paste0("eda/",stim_name,".png")
-    ggsave(file_name)
+    ggsave(file_name, plot = p)
     print(paste("Wrote file", file_name))
   }
+  print(p)
 }
 by_stim_graph(ds, "Feist")
 by_stim_graph(ds, "Feist", save_file = T)
 
 #Can we make the function even more flexible?
 #Make stim_name an optional argument. If it's supplied, filter by stim. If not, graph all data
-auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
+auc_boxplot <- function(df, stim_name = NULL, dv_name, save_file = FALSE) {
   #Part1: Check the input
   stopifnot("ERROR: save_file must be logical" = is.logical(save_file))
   
@@ -84,7 +85,7 @@ auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
   
   #Part3: Make the graph and save it to p
   p <- ds %>% 
-    ggplot(aes(x = age_group, y = AUC_sal)) + 
+    ggplot(aes(x = age_group, y = {{dv_name}})) + 
     geom_hline(yintercept = 0.5) +
     geom_boxplot() + 
     ggtitle(stim_name) + 
@@ -103,7 +104,8 @@ auc_boxplot <- function(df, stim_name = NULL, save_file = FALSE) {
   #Part5: Return the graph
   return(p)
 }
-auc_boxplot(ds)
+
+auc_boxplot(ds, dv_name = AUC_dist)
 auc_boxplot(ds, stim = "Plane")
 auc_boxplot(ds, save_file = T)
 auc_boxplot(ds, save_file = "yes") 
